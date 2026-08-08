@@ -159,7 +159,7 @@ st.markdown("""
 
 
 # =========================================================
-# DEFAULT VALUES & CURRENCY CONVERSION DICTIONARY
+# DEFAULT VALUES
 # =========================================================
 
 defaults = {
@@ -174,15 +174,7 @@ defaults = {
     "airconditioning": "yes",
     "parking": 2,
     "prefarea": "yes",
-    "furnishingstatus": "furnished",
-    "currency": "PKR"
-}
-
-EXCHANGE_RATES = {
-    "PKR": {"symbol": "Rs.", "rate": 1.0},
-    "INR": {"symbol": "₹", "rate": 0.30},
-    "USD": {"symbol": "$", "rate": 0.0036},
-    "EUR": {"symbol": "€", "rate": 0.0033}
+    "furnishingstatus": "furnished"
 }
 
 
@@ -250,8 +242,6 @@ with st.sidebar:
         type="secondary"
     )
 
-   
-    
     st.markdown("---")
 
     # Feature Inputs
@@ -297,7 +287,7 @@ with st.sidebar:
 # =========================================================
 
 st.markdown('<div class="main-title">🏠 House Price Predictor</div>', unsafe_allow_html=True)
-
+st.markdown('<div class="main-subtitle">Predict estimated market valuation with Linear Regression</div>', unsafe_allow_html=True)
 
 with st.container(border=True):
     st.subheader("📋 System Overview")
@@ -370,15 +360,12 @@ if st.session_state["prediction"] is not None:
     st.write("")
     st.subheader("🎯 Prediction Result")
 
-    # Currency Conversion Calculation
-    curr_data = EXCHANGE_RATES[selected_currency]
-    converted_price = st.session_state["prediction"] * curr_data["rate"]
-    symbol = curr_data["symbol"]
+    predicted_price = st.session_state["prediction"]
 
-    # Top Metric Display Box
+    # Top Metric Display Box with "Rs."
     st.metric(
-        label=f"🏠 Estimated Price ({selected_currency})",
-        value=f"{symbol} {converted_price:,.2f}"
+        label="🏠 Estimated Price",
+        value=f"Rs. {predicted_price:,.2f}"
     )
 
     st.write("")
@@ -389,13 +376,13 @@ if st.session_state["prediction"] is not None:
             "Area (sq ft)", "Bedrooms", "Bathrooms", "Stories", 
             "Main Road", "Guest Room", "Basement", "Hot Water Heating", 
             "Air Conditioning", "Parking", "Preferred Area", "Furnishing Status",
-            f"Predicted Price ({selected_currency})"
+            "Predicted Price"
         ],
         "Value": [
             f"{area}", bedrooms, bathrooms, stories, 
             mainroad, guestroom, basement, hotwaterheating, 
             airconditioning, parking, prefarea, furnishingstatus,
-            f"{symbol} {converted_price:,.2f}"
+            f"Rs. {predicted_price:,.2f}"
         ]
     })
 
